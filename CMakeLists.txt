@@ -1,37 +1,20 @@
+# What CMake to start at
 cmake_minimum_required(VERSION 3.12)
 
-# Pull in PICO SDK (must be before project)
-include(pico_sdk_import.cmake)
+set(OUTPUT_NAME hub75_counter)
 
-project(pico_examples C CXX ASM)
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+project(${OUTPUT_NAME} VERSION 1.0.0)
 
-# Initialize the SDK
-pico_sdk_init()
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-function(add_resource target file)
-  get_filename_component(NAME ${ARGV1} NAME_WE)
-  set(FILENAME ${ARGV1})
+message(${CMAKE_SYSTEM_NAME})
+if (${CMAKE_SYSTEM_NAME} STREQUAL "PICO")
+  message("****** Building for Pico ******")
+  include(pico)
 
-  add_custom_command(
-    OUTPUT ${NAME}.o
+  add_subdirectory(hub75)
 
-    COMMAND ${CMAKE_COMMAND} -E copy
-            ${CMAKE_CURRENT_SOURCE_DIR}/${FILENAME}
-            ${CMAKE_CURRENT_BINARY_DIR}
-
-    COMMAND arm-none-eabi-ld -r -b binary -o ${NAME}.o ${FILENAME}
-    DEPENDS ${FILENAME}
-  )
-
-  target_sources(${ARGV0} PRIVATE ${NAME}.o)
-endfunction(add_resource)
-
-include_directories(
-  ${CMAKE_CURRENT_LIST_DIR}
-)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-
-include(hub75_counter.cmake)
+else()
+  message("****** Building for locally ******")
+  include(local)
+endif()

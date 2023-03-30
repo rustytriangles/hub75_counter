@@ -2,11 +2,11 @@
 #include <cmath>
 #include <algorithm>
 #include <cstdint>
-#include <string>
-#include <string_view>
+//#include <string>
+//#include <string_view>
 
 #include "pico/stdlib.h"
-#include  "hardware/vreg.h"
+//#include  "hardware/vreg.h"
 
 #include "hub75.hpp"
 #include "typewriter_font.hpp"
@@ -47,7 +47,7 @@ Pixel alpha_blend(unsigned char alpha, const Pixel& foreground, const Pixel& bac
 int main() {
     stdio_init_all();
 
-    vreg_set_voltage(VREG_VOLTAGE_1_20);
+    //vreg_set_voltage(VREG_VOLTAGE_1_20);
     sleep_us(100);
     set_sys_clock_khz(266000, true);
 
